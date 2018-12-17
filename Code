@@ -1,0 +1,51 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+"""
+Created on Mon Dec 17 11:11:20 2018
+
+@author: isak
+"""
+
+from scipy import *
+from pylab import *
+import sys
+
+def f(x):
+    return 6*x**5-5*x**4-4*x**3+3*x**2
+def df(x):
+    return 30*x**4-20*x**3-12*x**2+6*x
+
+class fractal2D(object):
+    def __init__(self,f,*args):
+        self.function=f
+        self.derivatefunction=args[0]
+        self.zeros=[]
+    def __Newton__(self,guess):
+        x=guess
+        tol = 1e-10
+        y=tol
+        while(abs(x-y)>tol):
+            y=x
+            x=x-self.function(x)/self.derivatefunction(x)
+        return x
+    def __repr__(self):
+        return ("({},{})".format(self.function,self.derivatefunction))
+    def __inpoint__(self,xo):
+        tol=1e-3
+        x = self.__Newton__(xo)
+        for i in range(len(self.zeros)):
+            if (abs(x-self.zeros[i])<tol):
+                break
+        else: self.zeros.append(x)
+    def __plot__(self):
+        
+    
+
+fractal=fractal2D(f,df)
+print(fractal.__Newton__(5))
+fractal.__inpoint__(5)
+fractal.__inpoint__(30000)
+fractal.__inpoint__(-10)
+fractal.__inpoint__(99)
+print(fractal.zeros)
+
